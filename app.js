@@ -1,20 +1,18 @@
 const express = require('express');
+const app = express();
 const session = require('express-session');
 const helmet = require('helmet');
-const path = require('path');
 
-const app = express();
+app.use(express.static('public'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false } 
 }));
 
 app.use(helmet());
@@ -54,4 +52,6 @@ app.post('/login', (req, res) => {
 
 app.set('view engine', 'ejs');
 
-module.exports = app;
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
